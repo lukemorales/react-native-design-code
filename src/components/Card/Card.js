@@ -1,31 +1,41 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
 
-export default function Card() {
+export default function Card(props) {
+  const { hero, title, logo, caption, subtitle } = props;
+
   return (
     <Container>
       <Cover>
-        <Image source={require('../../../assets/background2.jpg')} />
-        <Title>Styled Components</Title>
+        <Image source={hero} />
+        <Title>{title}</Title>
       </Cover>
       <Content>
-        <Logo source={require('../../../assets/logo-react.png')} />
+        <Logo source={logo} />
         <Wrapper>
-          <Caption>React Native</Caption>
-          <Subtitle>5 of 12 sections</Subtitle>
+          <Caption>{caption}</Caption>
+          <Subtitle>{subtitle}</Subtitle>
         </Wrapper>
       </Content>
     </Container>
   );
 }
 
+Card.propTypes = {
+  hero: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  logo: PropTypes.node.isRequired,
+  caption: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+};
+
 const Container = styled.View`
   background: white;
   width: 315px;
   height: 280px;
   border-radius: 14px;
-  margin: 20px 0 0 20px;
+  margin: 0 0 0 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
   elevation: 15;
 `;
@@ -41,6 +51,7 @@ const Cover = styled.View`
 const Image = styled.Image`
   width: 100%;
   height: 100%;
+  background: #3c4560;
   position: absolute;
   top: 0;
   left: 0;
