@@ -106,7 +106,7 @@ const courses = [
   },
 ];
 
-function HomeScreen({ action, openMenu }) {
+function HomeScreen({ action, openMenu, navigation }) {
   const [scale] = useState(new Animated.Value(1));
   const [opacity] = useState(new Animated.Value(1));
 
@@ -180,14 +180,20 @@ function HomeScreen({ action, openMenu }) {
               contentContainerStyle={{ paddingRight: 20, paddingBottom: 30, paddingTop: 15 }}
             >
               {cards.map(card => (
-                <Card
+                <CardButton
                   key={card.title}
-                  title={card.title}
-                  hero={card.image}
-                  logo={card.logo}
-                  caption={card.caption}
-                  subtitle={card.subtitle}
-                />
+                  onPress={() => {
+                    navigation.push('Section');
+                  }}
+                >
+                  <Card
+                    title={card.title}
+                    hero={card.image}
+                    logo={card.logo}
+                    caption={card.caption}
+                    subtitle={card.subtitle}
+                  />
+                </CardButton>
               ))}
             </ScrollView>
             <Subtitle>Popular Courses</Subtitle>
@@ -210,6 +216,10 @@ function HomeScreen({ action, openMenu }) {
   );
 }
 
+HomeScreen.navigationOptions = {
+  header: null,
+};
+
 const mapStateToProps = state => ({ action: state.action });
 
 const mapDispatchToProps = dispatch => ({
@@ -229,7 +239,8 @@ const RootView = styled.View`
 const Container = styled.View`
   flex: 1;
   background: #f0f3f5;
-  border-radius: 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   overflow: hidden;
 `;
 
@@ -267,4 +278,13 @@ const Subtitle = styled.Text`
   font-size: 15px;
   margin: 20px 0 0 20px;
   text-transform: uppercase;
+`;
+
+const CardButton = styled.TouchableOpacity`
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 0 0 0 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
+  elevation: 15;
+  background: white;
 `;

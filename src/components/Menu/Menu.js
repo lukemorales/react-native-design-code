@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components/native';
-import { Animated, TouchableOpacity, Dimensions } from 'react-native';
+import { Animated, Dimensions } from 'react-native';
+import { RectButton } from 'react-native-gesture-handler';
 import * as Icon from '@expo/vector-icons';
 
 import MenuOption from '../MenuOption';
@@ -59,20 +60,11 @@ function Menu({ action, closeMenu }) {
         <Title>Luke Morales</Title>
         <Subtitle>Your Next React Native Developer</Subtitle>
       </Cover>
-      <TouchableOpacity
-        onPress={closeMenu}
-        style={{
-          position: 'absolute',
-          top: 120,
-          left: '50%',
-          marginLeft: -22,
-          zIndex: 1,
-        }}
-      >
+      <CloseButton onPress={closeMenu}>
         <CloseView>
           <Icon.Ionicons name="ios-close" size={44} color="#546bfb" />
         </CloseView>
-      </TouchableOpacity>
+      </CloseButton>
       <Content>
         {items.map(item => (
           <MenuOption key={item.title} icon={item.icon} title={item.title} text={item.text} />
@@ -131,16 +123,23 @@ const Subtitle = styled.Text`
   color: rgba(255, 255, 255, 0.5);
   margin-top: 8px;
 `;
+const CloseButton = styled(RectButton)`
+  position: absolute;
+  top: 115px;
+  left: 50%;
+  margin-left: -22px;
+  z-index: 1;
+  border-radius: 26px;
+  background-color: white;
+  elevation: 20;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+`;
 
 const CloseView = styled.View`
-  width: 44px;
-  height: 44px;
-  border-radius: 22px;
-  background: white;
+  width: 52px;
+  height: 52px;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-  elevation: 15;
 `;
 
 const Content = styled.View`
