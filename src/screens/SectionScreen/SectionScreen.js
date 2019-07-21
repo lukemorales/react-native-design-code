@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { RectButton } from 'react-native-gesture-handler';
 import * as Icon from '@expo/vector-icons';
+import Markdown from 'react-native-showdown';
 
 export default function SectionScreen({ navigation }) {
   const section = navigation.getParam('section');
@@ -15,31 +16,89 @@ export default function SectionScreen({ navigation }) {
   }, []);
 
   return (
-    <Container>
-      {/* <StatusBar /> */}
-      <Cover>
-        <Hero source={{ uri: section.image.url }} />
-        <Wrapper>
-          <Logo source={{ uri: section.logo.url }} />
-          <Subtitle>{section.subtitle}</Subtitle>
-        </Wrapper>
-        <Title>{section.title}</Title>
-        <Caption>{section.caption}</Caption>
-      </Cover>
-      <CloseButton
-        onPress={() => {
-          navigation.goBack();
-        }}
-      >
-        <Icon.Ionicons name="ios-close" size={36} color="#4775f2" />
-      </CloseButton>
-    </Container>
+    <ScrollView>
+      <Container>
+        {/* <StatusBar /> */}
+        <Cover>
+          <Hero source={{ uri: section.image.url }} />
+          <Wrapper>
+            <Logo source={{ uri: section.logo.url }} />
+            <Subtitle>{section.subtitle}</Subtitle>
+          </Wrapper>
+          <Title>{section.title}</Title>
+          <Caption>{section.caption}</Caption>
+        </Cover>
+        <CloseButton
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <Icon.Ionicons name="ios-close" size={36} color="#4775f2" />
+        </CloseButton>
+        <Content>
+          <Markdown body={section.content} pureCSS={htmlStyles} scalesPageToFit={false} scrollEnabled={false} />
+        </Content>
+      </Container>
+    </ScrollView>
   );
 }
 
 SectionScreen.navigationOptions = {
   header: null,
 };
+
+const htmlStyles = `
+  * {
+    font-family: -apple-system;
+    margin: 0;
+    padding: 0;
+    font-size: 17px;
+    font-weight: normal;
+    color: #3c4560;
+    line-height: 24px;
+  }
+
+  h2 {
+    font-size: 20px;
+    text-transform: uppercase;
+    color: #b8bece;
+    font-weight: 600;
+    margin-top: 50px;
+  }
+
+  p {
+    margin-top: 20px;
+  }
+
+  a {
+    color: #4775f2;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  img {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  pre {
+    padding: 20px;
+    background: #212C4F;
+    overflow: hidden;
+    word-wrap: break-word;
+    border-radius: 10px;
+      margin-top: 20px;
+  }
+
+  code {
+    color: white;
+  }
+`;
 
 const Container = styled.View`
   flex: 1;
@@ -107,4 +166,9 @@ const CloseButton = styled(RectButton)`
   position: absolute;
   top: 40px;
   right: 20px;
+`;
+
+const Content = styled.View`
+  height: 1000px;
+  padding: 12px;
 `;
