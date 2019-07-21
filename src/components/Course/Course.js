@@ -10,13 +10,13 @@ export default function Course(props) {
       <Cover>
         <Hero source={hero} />
         <Logo source={logo} />
-        <Subtitle> {subtitle} </Subtitle>
-        <Title> {title} </Title>
+        <Subtitle>{subtitle}</Subtitle>
+        <Title>{title}</Title>
       </Cover>
       <Content>
         <Avatar source={avatar} />
-        <Caption> {caption} </Caption>
-        <Author> Taught by: {author} </Author>
+        <Caption>{caption}</Caption>
+        <Author>Taught by: {author}</Author>
       </Content>
     </Container>
   );

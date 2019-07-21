@@ -1,11 +1,12 @@
 import React from 'react';
-import { ScrollView, SafeAreaView, StatusBar } from 'react-native';
+import { ScrollView, SafeAreaView } from 'react-native';
 import styled from 'styled-components/native';
 import * as Icon from '@expo/vector-icons';
 
 import Card from './src/components/Card';
 import Logo from './src/components/Logo';
 import Course from './src/components/Course';
+import Menu from './src/components/Menu';
 
 const logos = [
   {
@@ -107,11 +108,11 @@ const courses = [
 export default function App() {
   return (
     <Container>
-      <StatusBar />
+      <Menu />
       <SafeAreaView>
         <ScrollView style={{ height: '100%' }}>
           <TitleBar>
-            <Avatar source={require('./assets/avatar.jpg')} />
+            <Avatar source={{ uri: 'https://avatars3.githubusercontent.com/u/14251143?v=4' }} />
             <Title>Welcome Back, </Title>
             <Name>Luke</Name>
             <Icon.Ionicons
