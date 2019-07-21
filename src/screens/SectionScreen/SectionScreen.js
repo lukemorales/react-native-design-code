@@ -7,7 +7,6 @@ import Markdown from 'react-native-showdown';
 
 export default function SectionScreen({ navigation }) {
   const section = navigation.getParam('section');
-
   useEffect(() => {
     StatusBar.setBarStyle('light-content', true);
     return () => {
@@ -18,7 +17,6 @@ export default function SectionScreen({ navigation }) {
   return (
     <ScrollView>
       <Container>
-        {/* <StatusBar /> */}
         <Cover>
           <Hero source={{ uri: section.image.url }} />
           <Wrapper>

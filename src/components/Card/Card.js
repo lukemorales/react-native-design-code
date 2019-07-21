@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function Card(props) {
   const { hero, title, logo, caption, subtitle } = props;
@@ -36,7 +39,7 @@ Card.propTypes = {
 
 const Container = styled.View`
   background: white;
-  width: 315px;
+  width: ${screenWidth - 100};
   height: 280px;
 `;
 

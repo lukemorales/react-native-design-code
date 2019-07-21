@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
+
+const screenWidth = Dimensions.get('window').width;
 
 export default function Course(props) {
   const { hero, logo, subtitle, title, avatar, caption, author } = props;
@@ -33,7 +36,7 @@ Course.propTypes = {
 };
 
 const Container = styled.View`
-  width: 390px;
+  width: ${screenWidth - 40};
   height: 335px;
   border-radius: 14px;
   background: white;
