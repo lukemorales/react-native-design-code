@@ -8,11 +8,11 @@ export default function Card(props) {
   return (
     <Container>
       <Cover>
-        <Image source={hero} />
+        <Image source={{ uri: hero.url }} />
         <Title>{title}</Title>
       </Cover>
       <Content>
-        <Logo source={logo} />
+        <Logo source={{ uri: logo.url }} />
         <Wrapper>
           <Caption>{caption}</Caption>
           <Subtitle>{subtitle}</Subtitle>
@@ -23,9 +23,13 @@ export default function Card(props) {
 }
 
 Card.propTypes = {
-  hero: PropTypes.node.isRequired,
+  hero: PropTypes.shape({
+    url: PropTypes.string,
+  }).isRequired,
   title: PropTypes.string.isRequired,
-  logo: PropTypes.node.isRequired,
+  logo: PropTypes.PropTypes.shape({
+    url: PropTypes.string,
+  }).isRequired,
   caption: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
 };

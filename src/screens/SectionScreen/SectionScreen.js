@@ -18,9 +18,9 @@ export default function SectionScreen({ navigation }) {
     <Container>
       {/* <StatusBar /> */}
       <Cover>
-        <Hero source={section.image} />
+        <Hero source={{ uri: section.image.url }} />
         <Wrapper>
-          <Logo source={section.logo} />
+          <Logo source={{ uri: section.logo.url }} />
           <Subtitle>{section.subtitle}</Subtitle>
         </Wrapper>
         <Title>{section.title}</Title>

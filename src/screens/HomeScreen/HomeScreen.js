@@ -3,11 +3,32 @@ import { connect } from 'react-redux';
 import { ScrollView, SafeAreaView, TouchableOpacity, Animated, Easing, StatusBar } from 'react-native';
 import styled from 'styled-components/native';
 import * as Icon from '@expo/vector-icons';
+import { Query } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import Card from '~/components/Card';
 import Logo from '~/components/Logo';
 import Course from '~/components/Course';
 import Menu from '~/components/Menu';
+
+const CardsQuery = gql`
+  {
+    cardsCollection {
+      items {
+        title
+        subtitle
+        caption
+        image {
+          url
+        }
+        logo {
+          url
+        }
+        content
+      }
+    }
+  }
+`;
 
 const logos = [
   {
@@ -33,37 +54,6 @@ const logos = [
   {
     image: require('~/assets/logo-sketch.png'),
     text: 'Sketch',
-  },
-];
-
-const cards = [
-  {
-    title: 'React Native for Designers',
-    image: require('~/assets/background11.jpg'),
-    subtitle: 'React Native',
-    caption: '1 of 12 sections',
-    logo: require('~/assets/logo-react.png'),
-  },
-  {
-    title: 'Styled Components',
-    image: require('~/assets/background12.jpg'),
-    subtitle: 'React Native',
-    caption: '2 of 12 sections',
-    logo: require('~/assets/logo-react.png'),
-  },
-  {
-    title: 'Props and Icons',
-    image: require('~/assets/background13.jpg'),
-    subtitle: 'React Native',
-    caption: '3 of 12 sections',
-    logo: require('~/assets/logo-react.png'),
-  },
-  {
-    title: 'Static Data and Loop',
-    image: require('~/assets/background14.jpg'),
-    subtitle: 'React Native',
-    caption: '4 of 12 sections',
-    logo: require('~/assets/logo-react.png'),
   },
 ];
 
@@ -183,24 +173,35 @@ function HomeScreen({ action, openMenu, navigation }) {
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={{ paddingRight: 20, paddingBottom: 30, paddingTop: 15 }}
             >
-              {cards.map(card => (
-                <CardButton
-                  key={card.title}
-                  onPress={() => {
-                    navigation.push('Section', {
-                      section: card,
-                    });
-                  }}
-                >
-                  <Card
-                    title={card.title}
-                    hero={card.image}
-                    logo={card.logo}
-                    caption={card.caption}
-                    subtitle={card.subtitle}
-                  />
-                </CardButton>
-              ))}
+              <Query query={CardsQuery}>
+                {({ loading, error, data }) => {
+                  if (loading) return <Message>Loading...</Message>;
+                  if (error) return <Message>Couldn't fetch data =/</Message>;
+
+                  return (
+                    <>
+                      {data.cardsCollection.items.map(card => (
+                        <CardButton
+                          key={card.title}
+                          onPress={() => {
+                            navigation.push('Section', {
+                              section: card,
+                            });
+                          }}
+                        >
+                          <Card
+                            title={card.title}
+                            hero={card.image}
+                            logo={card.logo}
+                            caption={card.caption}
+                            subtitle={card.subtitle}
+                          />
+                        </CardButton>
+                      ))}
+                    </>
+                  );
+                }}
+              </Query>
             </ScrollView>
             <Subtitle>Popular Courses</Subtitle>
             {courses.map(course => (
@@ -236,6 +237,8 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(HomeScreen);
+
+const Message = styled.Text``;
 
 const RootView = styled.View`
   background: black;
