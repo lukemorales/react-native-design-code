@@ -39,12 +39,15 @@ function Menu({ action, closeMenu }) {
     if (action === 'openMenu') {
       Animated.spring(top, {
         toValue: 68,
+        bounciness: 6,
+        useNativeDriver: true,
       }).start();
     }
 
-    if (action == 'closeMenu') {
+    if (action === 'closeMenu') {
       Animated.spring(top, {
         toValue: screenHeight,
+        useNativeDriver: true,
       }).start();
     }
   }, [action, top]);
@@ -54,7 +57,7 @@ function Menu({ action, closeMenu }) {
   }, [action, toggleMenu]);
 
   return (
-    <AnimatedContainer style={{ top }}>
+    <AnimatedContainer style={{ transform: [{ translateY: top }] }}>
       <Cover>
         <Image source={require('~/assets/background2.jpg')} />
         <Title>Luke Morales</Title>

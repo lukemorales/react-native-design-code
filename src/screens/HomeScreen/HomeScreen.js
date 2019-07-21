@@ -118,11 +118,13 @@ function HomeScreen({ action, openMenu, navigation }) {
     if (action === 'openMenu') {
       Animated.spring(opacity, {
         toValue: 0.5,
+        useNativeDriver: true,
       }).start();
       Animated.timing(scale, {
         toValue: 0.9,
         duration: 300,
         easing: Easing.in(),
+        useNativeDriver: true,
       }).start();
 
       StatusBar.setBarStyle('light-content', true);
@@ -131,11 +133,13 @@ function HomeScreen({ action, openMenu, navigation }) {
     if (action === 'closeMenu') {
       Animated.spring(opacity, {
         toValue: 1,
+        useNativeDriver: true,
       }).start();
       Animated.timing(scale, {
         toValue: 1,
         duration: 300,
         easing: Easing.in(),
+        useNativeDriver: true,
       }).start();
       StatusBar.setBarStyle('dark-content', true);
     }
@@ -183,7 +187,9 @@ function HomeScreen({ action, openMenu, navigation }) {
                 <CardButton
                   key={card.title}
                   onPress={() => {
-                    navigation.push('Section');
+                    navigation.push('Section', {
+                      section: card,
+                    });
                   }}
                 >
                   <Card
