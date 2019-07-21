@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import { Animated, TouchableOpacity, Dimensions } from 'react-native';
 import * as Icon from '@expo/vector-icons';
 
 import MenuOption from '../MenuOption';
 
-const screenHeight = Dimensions.get('window').height;
+const screenHeight = Dimensions.get('window').height + 100;
 
 const items = [
   {
@@ -30,30 +31,36 @@ const items = [
   },
 ];
 
-export default function Menu() {
-  const [top, setTop] = useState(new Animated.Value(screenHeight));
+function Menu({ action, closeMenu }) {
+  const [top] = useState(new Animated.Value(screenHeight));
+
+  const toggleMenu = useCallback(() => {
+    if (action === 'openMenu') {
+      Animated.spring(top, {
+        toValue: 68,
+      }).start();
+    }
+
+    if (action == 'closeMenu') {
+      Animated.spring(top, {
+        toValue: screenHeight,
+      }).start();
+    }
+  }, [action, top]);
 
   useEffect(() => {
-    Animated.spring(top, {
-      toValue: 0,
-    }).start();
-  }, [top]);
-
-  function toggleMenu() {
-    Animated.spring(top, {
-      toValue: screenHeight + 100,
-    }).start();
-  }
+    toggleMenu();
+  }, [action, toggleMenu]);
 
   return (
     <AnimatedContainer style={{ top }}>
       <Cover>
-        <Image source={require('../../../assets/background2.jpg')} />
+        <Image source={require('~/assets/background2.jpg')} />
         <Title>Luke Morales</Title>
         <Subtitle>Your Next React Native Developer</Subtitle>
       </Cover>
       <TouchableOpacity
-        onPress={() => toggleMenu()}
+        onPress={closeMenu}
         style={{
           position: 'absolute',
           top: 120,
@@ -75,12 +82,27 @@ export default function Menu() {
   );
 }
 
+const mapStateToProps = state => ({ action: state.action });
+
+const mapDispatchToProps = dispatch => ({
+  closeMenu: () =>
+    dispatch({
+      type: 'CLOSE_MENU',
+    }),
+});
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Menu);
+
 const Container = styled.View`
   position: absolute;
   background: white;
   width: 100%;
   height: 100%;
   z-index: 100;
+  border-radius: 10px;
+  overflow: hidden;
 `;
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
