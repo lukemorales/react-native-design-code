@@ -44,7 +44,8 @@ module.exports = {
     'no-param-reassign': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    'global-require': 'off'
+    'global-require': 'off',
+    'no-underscore-dangle': 'off'
   },
   settings: {
     "import/resolver": {

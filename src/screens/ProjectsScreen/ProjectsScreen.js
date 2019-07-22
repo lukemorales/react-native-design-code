@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { PanResponder, Animated } from 'react-native';
+import { connect } from 'react-redux';
 import styled from 'styled-components/native';
 import Project from '~/components/Project';
+
+const mapStateToProps = state => ({
+  action: state.action,
+});
 
 const projects = [
   {
@@ -27,41 +32,57 @@ const projects = [
   },
 ];
 
-export default class ProjectsScreen extends Component {
+class ProjectsScreen extends Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   state = {
     pan: new Animated.ValueXY(),
     scale: new Animated.Value(0.9),
     translateY: new Animated.Value(44),
     thirdScale: new Animated.Value(0.8),
     thirdTranslateY: new Animated.Value(-50),
+    opacity: new Animated.Value(0),
     index: 0,
   };
 
   componentWillMount() {
-    const { pan, scale, translateY, thirdScale, thirdTranslateY } = this.state;
+    const { pan, scale, translateY, thirdScale, thirdTranslateY, opacity } = this.state;
     this._panResponder = PanResponder.create({
-      onMoveShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: (event, gestureState) => {
+        const { action } = this.props;
+        if (gestureState.dx === 0 && gestureState.dy === 0) {
+          return false;
+        }
+        if (action === 'openCard') {
+          return false;
+        }
+        return true;
+      },
       onPanResponderGrant: () => {
-        const positionY = pan.y.__getValue();
-        const positionX = pan.x.__getValue();
+        Animated.parallel([
+          Animated.timing(opacity, {
+            toValue: 1,
+          }),
+          Animated.spring(scale, {
+            toValue: 1,
+            useNativeDriver: true,
+          }),
+          Animated.spring(translateY, {
+            toValue: 0,
+            useNativeDriver: true,
+          }),
 
-        Animated.spring(scale, {
-          toValue: 1,
-          useNativeDriver: true,
-        }).start();
-        Animated.spring(translateY, {
-          toValue: 0,
-          useNativeDriver: true,
-        }).start();
-
-        Animated.spring(thirdScale, {
-          toValue: 0.9,
-          useNativeDriver: true,
-        }).start();
-        Animated.spring(thirdTranslateY, {
-          toValue: 44,
-          useNativeDriver: true,
-        }).start();
+          Animated.spring(thirdScale, {
+            toValue: 0.9,
+            useNativeDriver: true,
+          }),
+          Animated.spring(thirdTranslateY, {
+            toValue: 44,
+            useNativeDriver: true,
+          }),
+        ]).start();
       },
       onPanResponderMove: Animated.event([
         null,
@@ -72,8 +93,11 @@ export default class ProjectsScreen extends Component {
       ]),
       onPanResponderRelease: () => {
         const positionY = pan.y.__getValue();
-        const positionX = pan.x.__getValue();
         const { index } = this.state;
+
+        Animated.timing(opacity, {
+          toValue: 0,
+        }).start();
 
         if (positionY > 180) {
           Animated.timing(pan, {
@@ -98,6 +122,9 @@ export default class ProjectsScreen extends Component {
               useNativeDriver: true,
             }),
 
+            Animated.timing(opacity, {
+              toValue: 0,
+            }),
             Animated.spring(scale, {
               toValue: 0.9,
               useNativeDriver: true,
@@ -132,9 +159,14 @@ export default class ProjectsScreen extends Component {
   };
 
   render() {
-    const { pan, scale, translateY, thirdScale, thirdTranslateY, index } = this.state;
+    const { pan, scale, translateY, thirdScale, thirdTranslateY, index, opacity } = this.state;
     return (
       <Container>
+        <Mask
+          style={{
+            opacity,
+          }}
+        />
         <Animated.View
           style={{ transform: [{ translateX: pan.x }, { translateY: pan.y }] }}
           {...this._panResponder.panHandlers}
@@ -144,6 +176,7 @@ export default class ProjectsScreen extends Component {
             image={projects[index].image}
             author={projects[index].author}
             text={projects[index].text}
+            canOpen
           />
         </Animated.View>
         <StackCard style={{ transform: [{ scale }, { translateY }] }}>
@@ -167,9 +200,17 @@ export default class ProjectsScreen extends Component {
   }
 }
 
-ProjectsScreen.navigationOptions = {
-  header: null,
-};
+export default connect(mapStateToProps)(ProjectsScreen);
+
+const Mask = styled(Animated.View)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #4775f237
+  z-index: -5;
+`;
 
 const Container = styled.View`
   flex: 1;

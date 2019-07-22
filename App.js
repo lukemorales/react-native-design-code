@@ -24,6 +24,10 @@ const reducer = (state = INITIAL_STATE, action) => {
       return { action: 'openMenu' };
     case 'CLOSE_MENU':
       return { action: 'closeMenu' };
+    case 'OPEN_CARD':
+      return { action: 'openCard' };
+    case 'CLOSE_CARD':
+      return { action: 'closeCard' };
     default:
       return state;
   }

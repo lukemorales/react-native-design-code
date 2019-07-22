@@ -4,7 +4,6 @@ import * as Icon from '@expo/vector-icons';
 
 import HomeScreen from '~/screens/HomeScreen';
 import SectionScreen from '~/screens/SectionScreen';
-import CoursesScreen from '~/screens/CoursesScreen';
 import ProjectsScreen from '~/screens/ProjectsScreen';
 
 const activeColor = '#4775f2';
@@ -37,17 +36,6 @@ HomeStack.navigationOptions = ({ navigation }) => {
   };
 };
 
-const CoursesStack = createStackNavigator({
-  Courses: CoursesScreen,
-});
-
-CoursesStack.navigationOptions = {
-  tabBarLabel: 'Courses',
-  tabBarIcon: ({ focused }) => (
-    <Icon.Ionicons name="ios-albums" size={26} color={focused ? activeColor : inactiveColor} />
-  ),
-};
-
 const ProjectsStack = createStackNavigator({
   Projects: ProjectsScreen,
 });
@@ -62,7 +50,6 @@ ProjectsStack.navigationOptions = {
 const TabNavigator = createBottomTabNavigator(
   {
     HomeStack,
-    CoursesStack,
     ProjectsStack,
   },
   {
