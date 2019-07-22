@@ -1,10 +1,25 @@
+/* eslint react/forbid-prop-types: 0 */
 import React, { useState, useEffect, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { ScrollView, SafeAreaView, TouchableOpacity, Animated, Easing, StatusBar } from 'react-native';
-import styled from 'styled-components/native';
 import * as Icon from '@expo/vector-icons';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import {
+  Message,
+  RootView,
+  AnimatedContainer,
+  TitleBar,
+  Avatar,
+  Title,
+  Name,
+  Subtitle,
+  CardButton,
+} from './HomeScreen_Styles';
+
+import courses from '~/data/courses';
+import logos from '~/data/logos';
 
 import Card from '~/components/Card';
 import Logo from '~/components/Logo';
@@ -29,72 +44,6 @@ const CardsQuery = gql`
     }
   }
 `;
-
-const logos = [
-  {
-    image: require('~/assets/logo-framerx.png'),
-    text: 'Framer X',
-  },
-  {
-    image: require('~/assets/logo-figma.png'),
-    text: 'Figma',
-  },
-  {
-    image: require('~/assets/logo-studio.png'),
-    text: 'Studio',
-  },
-  {
-    image: require('~/assets/logo-react.png'),
-    text: 'React',
-  },
-  {
-    image: require('~/assets/logo-swift.png'),
-    text: 'Swift',
-  },
-  {
-    image: require('~/assets/logo-sketch.png'),
-    text: 'Sketch',
-  },
-];
-
-const courses = [
-  {
-    title: 'Prototype in InVision Studio',
-    subtitle: '10 sections',
-    image: require('~/assets/background13.jpg'),
-    logo: require('~/assets/logo-studio.png'),
-    author: 'Meng To',
-    avatar: require('~/assets/avatar.jpg'),
-    caption: 'Design an interactive prototype',
-  },
-  {
-    title: 'React for Designers',
-    subtitle: '12 sections',
-    image: require('~/assets/background11.jpg'),
-    logo: require('~/assets/logo-react.png'),
-    author: 'Meng To',
-    avatar: require('~/assets/avatar.jpg'),
-    caption: 'Learn to design and code a React site',
-  },
-  {
-    title: 'Design and Code with Framer X',
-    subtitle: '10 sections',
-    image: require('~/assets/background14.jpg'),
-    logo: require('~/assets/logo-framerx.png'),
-    author: 'Meng To',
-    avatar: require('~/assets/avatar.jpg'),
-    caption: 'Create powerful design and code components for your app',
-  },
-  {
-    title: 'Design System in Figma',
-    subtitle: '10 sections',
-    image: require('~/assets/background6.jpg'),
-    logo: require('~/assets/logo-figma.png'),
-    author: 'Meng To',
-    avatar: require('~/assets/avatar.jpg'),
-    caption: 'Complete guide to designing a site using a collaborative design tool',
-  },
-];
 
 function HomeScreen({ action, openMenu, navigation }) {
   const [scale] = useState(new Animated.Value(1));
@@ -176,7 +125,7 @@ function HomeScreen({ action, openMenu, navigation }) {
               <Query query={CardsQuery}>
                 {({ loading, error, data }) => {
                   if (loading) return <Message>Loading...</Message>;
-                  if (error) return <Message>Couldn't fetch data =/</Message>;
+                  if (error) return <Message>Could not fetch data =/</Message>;
 
                   return (
                     <>
@@ -233,67 +182,13 @@ const mapDispatchToProps = dispatch => ({
   openMenu: () => dispatch({ type: 'OPEN_MENU' }),
 });
 
+HomeScreen.propTypes = {
+  action: PropTypes.string.isRequired,
+  openMenu: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
+
 export default connect(
   mapStateToProps,
   mapDispatchToProps
 )(HomeScreen);
-
-const Message = styled.Text``;
-
-const RootView = styled.View`
-  background: black;
-  flex: 1;
-`;
-
-const Container = styled.View`
-  flex: 1;
-  background: #f0f3f5;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  overflow: hidden;
-`;
-
-const AnimatedContainer = Animated.createAnimatedComponent(Container);
-
-const TitleBar = styled.View`
-  width: 100%;
-  margin: 50px 0 0;
-  padding: 0 0 0 80px;
-`;
-
-const Avatar = styled.Image`
-  width: 44px;
-  height: 44px;
-  background: #3c4560;
-  border-radius: 22px;
-  margin: 0 0 0 20px;
-`;
-
-const Title = styled.Text`
-  font-size: 16px;
-  color: #b8bece;
-  font-weight: 500;
-`;
-
-const Name = styled.Text`
-  font-size: 20px;
-  color: #3c4560;
-  font-weight: bold;
-`;
-
-const Subtitle = styled.Text`
-  color: #b8bece;
-  font-weight: 600;
-  font-size: 15px;
-  margin: 20px 0 0 20px;
-  text-transform: uppercase;
-`;
-
-const CardButton = styled.TouchableOpacity`
-  border-radius: 14px;
-  overflow: hidden;
-  margin: 0 0 0 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
-  elevation: 15;
-  background: white;
-`;

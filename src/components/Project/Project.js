@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
-import styled from 'styled-components/native';
+import PropTypes from 'prop-types';
 import { Animated, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import * as Icon from '@expo/vector-icons';
-import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
+import {
+  AnimatedGradient,
+  AnimatedContainer,
+  Cover,
+  Image,
+  AnimatedTitle,
+  Author,
+  AnimatedText,
+  CloseButton,
+  AnimatedCloseView,
+} from './Project_Styles';
 
 const mapStateToProps = state => {
   return {
@@ -63,7 +73,7 @@ function Project({ image, title, author, text, canOpen, openCard: dispatchOpenCa
 
   return (
     <TouchableWithoutFeedback onPress={() => openCard()}>
-      <Container
+      <AnimatedContainer
         style={{
           width: cardWidth,
           height: cardHeight,
@@ -76,7 +86,7 @@ function Project({ image, title, author, text, canOpen, openCard: dispatchOpenCa
       >
         <Cover>
           <Image source={image} />
-          <Title
+          <AnimatedTitle
             style={{
               transform: [
                 {
@@ -90,7 +100,7 @@ function Project({ image, title, author, text, canOpen, openCard: dispatchOpenCa
             }}
           >
             {title}
-          </Title>
+          </AnimatedTitle>
           <Author>by {author}</Author>
         </Cover>
         <AnimatedGradient
@@ -106,7 +116,7 @@ function Project({ image, title, author, text, canOpen, openCard: dispatchOpenCa
             }),
           }}
         />
-        <Text
+        <AnimatedText
           style={{
             height: cardHeight.interpolate({
               inputRange: [460, screenHeight],
@@ -116,7 +126,7 @@ function Project({ image, title, author, text, canOpen, openCard: dispatchOpenCa
           }}
         >
           {text}
-        </Text>
+        </AnimatedText>
         <AnimatedCloseView
           style={{
             opacity: cardHeight.interpolate({
@@ -130,7 +140,7 @@ function Project({ image, title, author, text, canOpen, openCard: dispatchOpenCa
             <Icon.Ionicons name="ios-close" size={36} color="#4775f2" />
           </CloseButton>
         </AnimatedCloseView>
-      </Container>
+      </AnimatedContainer>
     </TouchableWithoutFeedback>
   );
 }
@@ -140,68 +150,16 @@ export default connect(
   mapDispatchToProps
 )(Project);
 
-const AnimatedGradient = Animated.createAnimatedComponent(LinearGradient);
+Project.propTypes = {
+  image: PropTypes.node.isRequired,
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  canOpen: PropTypes.bool,
+  openCard: PropTypes.func.isRequired,
+  closeCard: PropTypes.func.isRequired,
+};
 
-const Container = styled(Animated.View)`
-  border-radius: 14px;
-  background-color: white;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-  elevation: 15;
-`;
-
-const Cover = styled.View`
-  height: 290px;
-  border-top-left-radius: 14px;
-  border-top-right-radius: 14px;
-  overflow: hidden;
-`;
-
-const Image = styled.Image`
-  width: 100%;
-  height: 290px;
-`;
-
-const Title = styled(Animated.Text)`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  width: 300px;
-`;
-
-const Author = styled.Text`
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 15px;
-  font-weight: 600;
-  text-transform: uppercase;
-`;
-
-const Text = styled(Animated.Text)`
-  font-size: 17px;
-  margin: 20px;
-  line-height: 24px;
-  color: #3c4560;
-`;
-
-const CloseButton = styled.TouchableOpacity`
-  background: white;
-  width: 48px;
-  height: 48px;
-  justify-content: center;
-  align-items: center;
-`;
-
-const AnimatedCloseView = styled(Animated.View)`
-  border-radius: 24px;
-  overflow: hidden;
-  elevation: 20;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
-  position: absolute;
-  top: 40px;
-  right: 20px;
-`;
+Project.defaultProps = {
+  canOpen: false,
+};

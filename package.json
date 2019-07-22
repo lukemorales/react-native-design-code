@@ -11,6 +11,7 @@
     "@expo/vector-icons": "^10.0.0",
     "apollo-boost": "^0.4.3",
     "expo": "^33.0.0",
+    "expo-linear-gradient": "~5.0.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "prop-types": "^15.7.2",

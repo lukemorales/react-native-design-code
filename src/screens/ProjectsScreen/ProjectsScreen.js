@@ -1,40 +1,19 @@
+/* eslint react/forbid-prop-types: 0 */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { PanResponder, Animated } from 'react-native';
 import { connect } from 'react-redux';
-import styled from 'styled-components/native';
 import Project from '~/components/Project';
-
-const mapStateToProps = state => ({
-  action: state.action,
-});
-
-const projects = [
-  {
-    title: 'Price Tag',
-    image: require('~/assets/background5.jpg'),
-    author: 'Liu Yi',
-    text:
-      'Thanks to Design+Code, I improved my design skill and learned to do animations for my app Price Tag, a top news app in China.',
-  },
-  {
-    title: 'The DM App - Ananoumous Chat',
-    image: require('~/assets/background6.jpg'),
-    author: 'Chad Goodman',
-    text:
-      'Design+Code was the first resource I used when breaking into software. I went from knowing nothing about design or code to building a production ready app from scratch. ',
-  },
-  {
-    title: 'Nikhiljay',
-    image: require('~/assets/background7.jpg'),
-    author: "Nikhil D'Souza",
-    text:
-      "Recently finished the React course by @Mengto, and I 10/10 would recommend. I already rewrote my personal website in @reactjs and I'm very excited with it.",
-  },
-];
+import projects from '~/data/projects';
+import { AnimatedMask, Container, AnimatedStackCard, AnimatedThirdStackCard } from './ProjectsScreen_Styles';
 
 class ProjectsScreen extends Component {
   static navigationOptions = {
     header: null,
+  };
+
+  static propTypes = {
+    action: PropTypes.string.isRequired,
   };
 
   state = {
@@ -162,7 +141,7 @@ class ProjectsScreen extends Component {
     const { pan, scale, translateY, thirdScale, thirdTranslateY, index, opacity } = this.state;
     return (
       <Container>
-        <Mask
+        <AnimatedMask
           style={{
             opacity,
           }}
@@ -179,64 +158,29 @@ class ProjectsScreen extends Component {
             canOpen
           />
         </Animated.View>
-        <StackCard style={{ transform: [{ scale }, { translateY }] }}>
+        <AnimatedStackCard style={{ transform: [{ scale }, { translateY }] }}>
           <Project
             title={projects[this.getNextIndex(index)].title}
             image={projects[this.getNextIndex(index)].image}
             author={projects[this.getNextIndex(index)].author}
             text={projects[this.getNextIndex(index)].text}
           />
-        </StackCard>
-        <ThirdStackCard style={{ transform: [{ scale: thirdScale }, { translateY: thirdTranslateY }] }}>
+        </AnimatedStackCard>
+        <AnimatedThirdStackCard style={{ transform: [{ scale: thirdScale }, { translateY: thirdTranslateY }] }}>
           <Project
             title={projects[this.getNextIndex(index + 1)].title}
             image={projects[this.getNextIndex(index + 1)].image}
             author={projects[this.getNextIndex(index + 1)].author}
             text={projects[this.getNextIndex(index + 1)].text}
           />
-        </ThirdStackCard>
+        </AnimatedThirdStackCard>
       </Container>
     );
   }
 }
 
+const mapStateToProps = state => ({
+  action: state.action,
+});
+
 export default connect(mapStateToProps)(ProjectsScreen);
-
-const Mask = styled(Animated.View)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: #4775f237
-  z-index: -5;
-`;
-
-const Container = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  background: #f0f3f5;
-`;
-
-const StackCard = styled(Animated.View)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
-const ThirdStackCard = styled(Animated.View)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -2;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-`;
