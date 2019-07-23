@@ -34,10 +34,9 @@
   <a href="#memo-license">License</a>
 </p>
 
-
 <p align="center">
-  <img alt="App Demo" src="https://res.cloudinary.com/lukemorales/image/upload/v1563811969/readme_logos/designcode_screen_01_namqzg.gif">
-  <img alt="App Demo" src="https://res.cloudinary.com/lukemorales/image/upload/v1563811783/readme_logos/designcode_screen_02_hcy3zh.gif">
+  <img alt="App Demo" src="https://res.cloudinary.com/lukemorales/image/upload/v1563901304/readme_logos/designcode_screen_01_nxrabs.gif">
+  <img alt="App Demo" src="https://res.cloudinary.com/lukemorales/image/upload/v1563901538/readme_logos/designcode_screen_02_kuvvwt.gif">
 </p>
 
 ## :rocket: Technologies
